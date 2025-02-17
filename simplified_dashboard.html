@@ -1,0 +1,171 @@
+
+<script>
+	const ipAddress = '192.168.0.199';
+</script>
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Irrigation System Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f4f8;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: #4CAF50;
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+        }
+        .dashboard-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            padding: 20px;
+        }
+        .dashboard-card {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin: 20px;
+            width: 250px;
+            padding: 20px;
+            text-align: center;
+        }
+        .dashboard-card h3 {
+            margin-bottom: 10px;
+            font-size: 1.2em;
+        }
+        .dashboard-card p {
+            font-size: 1.5em;
+            margin: 0;
+            padding: 10px;
+        }
+        .alert {
+            color: red;
+            font-weight: bold;
+            background-color: #ffe0e0;
+            padding: 5px;
+            border-radius: 5px;
+        }
+        .active {
+            color: green;
+            font-weight: bold;
+        }
+        .pump-status {
+            margin-top: 10px;
+            font-size: 1.1em;
+        }
+        .pump-on {
+            color: red;
+            font-weight: bold;
+        }
+        .pump-off {
+            color: green;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Irrigation System Dashboard</h1>
+</header>
+
+<div class="dashboard-container">
+    <div class="dashboard-card" id="tempCard">
+        <h3>Temperature</h3>
+        <p id="temperature">Loading...</p>
+    </div>
+    <div class="dashboard-card" id="humidityCard">
+        <h3>Humidity</h3>
+        <p id="humidity">Loading...</p>
+    </div>
+    <div class="dashboard-card" id="moistureCard1">
+        <h3>Soil Moisture (Sensor 1)</h3>
+        <p id="moisture1">Loading...</p>
+        <div class="pump-status" id="pumpStatus1"></div>
+    </div>
+    <div class="dashboard-card" id="moistureCard2">
+        <h3>Soil Moisture (Sensor 2)</h3>
+        <p id="moisture2">Loading...</p>
+        <div class="pump-status" id="pumpStatus2"></div>
+    </div>
+    <div class="dashboard-card" id="moistureCard3">
+        <h3>Soil Moisture (Sensor 3)</h3>
+        <p id="moisture3">Loading...</p>
+        <div class="pump-status" id="pumpStatus3"></div>
+    </div>
+    <div class="dashboard-card" id="moistureCard4">
+        <h3>Soil Moisture (Sensor 4)</h3>
+        <p id="moisture4">Loading...</p>
+        <div class="pump-status" id="pumpStatus4"></div>
+    </div>
+</div>
+
+<script>
+    // WebSocket connection
+    const ws = new WebSocket('ws://'+ipAddress+':81');
+
+    // On message event for WebSocket
+ws.onmessage = function(event) {
+    // Replace 'nan' with 'null' to make the string valid JSON
+    let data = event.data.replace(/nan/g, 'null');
+
+    // Now parse the data as JSON
+    try {
+        data = JSON.parse(data);
+    } catch (e) {
+        console.error('Error parsing JSON:', e);
+        return;
+    }
+
+    // Update temperature and humidity
+    const temperature = data.temperature === null ? 'N/A' : `${data.temperature} °C`;
+    const humidity = data.humidity === null ? 'N/A' : `${data.humidity} %`;
+
+    document.getElementById('temperature').innerText = temperature;
+    document.getElementById('humidity').innerText = humidity;
+
+    // Update moisture and pump statuses for each sensor
+    for (let i = 0; i < data.moisture.length; i++) {
+        const moisture = data.moisture[i];
+        const moistureText = `${moisture} %`;
+        const pumpStatusElement = document.getElementById(`pumpStatus${i + 1}`);
+
+        document.getElementById(`moisture${i + 1}`).innerText = moistureText;
+
+        // Check if moisture is below 10% to activate the pump
+        if (moisture < 10) {
+            pumpStatusElement.innerHTML = '<span class="pump-on">Pump Activated</span>';
+        } else {
+            pumpStatusElement.innerHTML = '<span class="pump-off">Pump Off</span>';
+        }
+    }
+};
+
+
+    // Error handling for WebSocket
+    ws.onerror = function(error) {
+        console.error('WebSocket Error:', error);
+    };
+
+    // Connection open event
+    ws.onopen = function() {
+        console.log('WebSocket connection established');
+    };
+
+    // Connection close event
+    ws.onclose = function() {
+        console.log('WebSocket connection closed');
+    };
+</script>
+
+</body>
+</html>
