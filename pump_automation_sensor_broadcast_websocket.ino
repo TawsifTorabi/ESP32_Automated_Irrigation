@@ -7,8 +7,8 @@
 #include <WebSocketsServer.h>
 
 // WiFi credentials
-const char* ssid = "UIU-CAIR";
-const char* password = "12345678";
+const char* ssid = "YOUR_WIFI_SSID";
+const char* password = "YOUR_WIFI_PASSWORD";
 
 // Define the sensor pins
 #define SENSOR_1 34
