@@ -60,6 +60,14 @@ A smart irrigation system that monitors soil moisture, temperature, and humidity
 
 ---
 
+
+
+## 📐 Schematics
+
+![Figure 1: Wiring schematic of the ESP32 with sensors and relays.](https://raw.githubusercontent.com/TawsifTorabi/ESP32_Automated_Irrigation/refs/heads/main/Schematic_Automated-Soil-Irrigation-ESP32_2025-06-23.svg)
+
+*Figure 1: Wiring schematic of the ESP32 with sensors and relays.*
+
 ### 2. Web Dashboard Setup
 
 1. Open `dashboard.html` in any modern browser.
@@ -71,6 +79,8 @@ A smart irrigation system that monitors soil moisture, temperature, and humidity
    </script>
    ```
 3. The dashboard will auto-connect via WebSocket (ws://<ESP32_IP>:81) and start receiving data.
+
+
 
 ---
 
@@ -133,7 +143,7 @@ Feel free to use, modify, and share with attribution.
 
 ## 👨‍💻 Author
 
-Developed by **[Tawsif Torabi]**  
+Developed by **Tawsif Torabi**  
 [United International University / UIU Mars Rover Team]
 
 > "Grow smarter, not harder."
