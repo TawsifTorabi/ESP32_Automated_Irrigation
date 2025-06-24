@@ -37,12 +37,11 @@ A smart irrigation system that monitors soil moisture, temperature, and humidity
 1. Install the following libraries in Arduino IDE:
    - `WiFi.h`
    - `Wire.h`
-   - `LiquidCrystal_I2C.h`
-   - `DHT sensor library`
-   - `Adafruit Unified Sensor`
-   - `WebSocketsServer`
+   - `[LiquidCrystal_I2C.h](https://github.com/johnrickman/LiquidCrystal_I2C)`
+   - `[DHT sensor library - Install with all dependencies](https://github.com/adafruit/DHT-sensor-library)`
+   - `[WebSocketsServer](https://github.com/gilmaimon/ArduinoWebsockets)`
 
-2. Open `ESP32_Firmware.ino`.
+2. Open a file named `you_project_code.ino` and paste the code.
 
 3. Update WiFi credentials:
    ```cpp
